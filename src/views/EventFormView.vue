@@ -4,7 +4,7 @@ import EventService from '@/services/EventService'
 import { useRouter } from 'vue-router'
 import { useMessangeStore } from '@/stores/message'
 import BaseInput from '@/components/BaseInput.vue'
-import { type EventOrganizer, type EventItem } from '@/type'
+import { type Organizer, type EventItem } from '@/type'
 import OrganizerService from '@/services/OrganizerService'
 import BaseSelect from '@/components/BaseSelect.vue'
 import ImageUpload from '@/components/ImageUpload.vue'
@@ -43,7 +43,7 @@ function saveEvent() {
     })
 }
 
-const organizers = ref<EventOrganizer[]>([])
+const organizers = ref<Organizer[]>([])
 OrganizerService.getOrganizers()
   .then((response) => {
     organizers.value = response.data
