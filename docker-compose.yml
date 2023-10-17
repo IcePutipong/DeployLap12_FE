@@ -3,4 +3,4 @@ services:
   web: 
     image: "putipongsailen/se331-lab06:latest"
     ports:
-          - 8002:80
+          - 8001:80
