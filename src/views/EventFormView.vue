@@ -8,6 +8,7 @@ import { type Organizer, type EventItem } from '@/type'
 import OrganizerService from '@/services/OrganizerService'
 import BaseSelect from '@/components/BaseSelect.vue'
 import ImageUpload from '@/components/ImageUpload.vue'
+import type { AxiosResponse } from 'axios'
 
 const store = useMessangeStore()
 const event = ref<EventItem>({
@@ -18,7 +19,7 @@ const event = ref<EventItem>({
   location: '',
   date: '',
   time: '',
-  organizer: { id: 1, name: ' ',images: '' },
+  organizer: { id: 1, name: ' ',images: [],address:'',roles:[] },
   petsAllowed: false,
   images: []
   
@@ -44,13 +45,13 @@ function saveEvent() {
 }
 
 const organizers = ref<Organizer[]>([])
-OrganizerService.getOrganizers()
-  .then((response) => {
-    organizers.value = response.data
-  })
-  .catch(() => {
-    router.push({ name: 'network-error' })
-  })
+  OrganizerService.getOrganizersBy()
+    .then((response: AxiosResponse<Organizer[]>) => {
+      organizers.value = response.data
+    })
+    .catch(() => {
+      router.push({ name: 'network-error' })
+})
 </script>
 
 <template>
@@ -76,10 +77,13 @@ OrganizerService.getOrganizers()
 
       <h3>Who is your organizer?</h3>
       <BaseSelect
-        v-model="event.organizer.id"
-        label="Organizer"
-        :options="organizers"
-      />
+				label="Organizer"
+				v-model="event.organizer!.id"
+				:options="organizers"
+				:key-extractor="(x) => x.id"
+				:value-extractor="(x) => x.id"
+				:text-extractor="(x) => x.name" 
+        />
       <h3>The image of the Event</h3>
       <ImageUpload v-model="event.images"/>
       <button type="submit" class="ml-2">Submit</button>

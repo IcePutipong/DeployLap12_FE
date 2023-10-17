@@ -1,37 +1,33 @@
 <template>
-    <label v-if="label">{{ label }}</label>
-      <select
-          class="field"
-          :value="modelValue"
-          v-bind="{
-        ...$attrs,
-        onChange: ($event) => { $emit('update:modelValue', $event.target.value) }
-      }"
-      >
-        <option
-            v-for="option in options"
-            :value="option.id"
-            :key="option.id"
-            :selected="option.id === modelValue"
-        >{{ option.name }}</option>
-      </select>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-        label: {
-          type: String,
-                default: ''
-        },
-      modelValue: {
-          type: [String, Number,Object],
-        default: ''
-      },
-      options: {
-          type: Array,
-            required: true
-        }
-    }
-  }
-  </script>
+	<div class="flex flex-row justify-between items-center gap-4">
+		<label v-if="label">{{ label }}</label>
+		<select
+			class="border border-black border-opacity-25 rounded-md px-2 py-1"
+			:value="modelValue"
+			v-bind="{
+                ...$attrs,
+                onChange: ($event) => {
+                    $emit('update:modelValue', ($event.target as HTMLSelectElement)?.value);
+                },
+            }">
+			<option
+				v-for="option in options"
+				:value="valueExtractor(option)"
+				:key="keyExtractor(option)"
+				:selected="valueExtractor(option) === modelValue">
+				{{ textExtractor(option) }}
+			</option>
+		</select>
+	</div>
+</template>
+
+<script setup lang="ts" generic="T">
+	defineProps<{
+		label: string;
+		modelValue: T[keyof T];
+		options: T[];
+		keyExtractor: (x: T) => string | number | symbol | undefined;
+		valueExtractor: (x: T) => T[keyof T];
+		textExtractor: (x: T) => T[keyof T];
+	}>();
+</script>

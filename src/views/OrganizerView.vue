@@ -20,30 +20,36 @@ const props = defineProps({
 })
 
 
-OrganizerService.getOrganizers().then((response: AxiosResponse<Organizer[]>) => {
-  organizers.value = response.data
-  totalOrganizer.value = response.headers['x-total-count']
-}).catch(()=>{
-  router.push({ name: 'NetworkError'})
-})
 
-
-onBeforeRouteUpdate((to,form, next) =>{
-  const toPage = Number(to.query.page)
-
-  OrganizerService.getOrganizers().then((response: AxiosResponse<Organizer[]>) =>{
-    organizers.value = response.data
-    totalOrganizer.value = response.headers['x-total-count']
-    next()
-  }).catch(() => {
-    next({name: 'NetworkError'})
-  })
-})
 
 const hasNextPage = computed(() => {
   const totalPages = Math.ceil(totalOrganizer.value / 3)
   return props.page.valueOf() < totalPages
   
+})
+
+OrganizerService.getOrganizers(3, props.page)
+    .then((response: AxiosResponse<Organizer[]>) => {
+      organizers.value = response.data
+      totalOrganizer.value =
+          response.headers['x-total-count']
+      console.log(response.data)
+    })
+    .catch(() => {
+      router.push({ name: 'network-error' })
+    })
+
+onBeforeRouteUpdate((to, from, next) => {
+  const toPage = Number(to.query.page)
+  OrganizerService.getOrganizers(3, toPage)
+      .then((response: AxiosResponse<Organizer[]>) => {
+        organizers.value = response.data
+        totalOrganizer.value = response.headers['x-total-count']
+        next()
+      })
+      .catch(() => {
+        next({ name: 'NetworkError' })
+      })
 })
 </script>
 

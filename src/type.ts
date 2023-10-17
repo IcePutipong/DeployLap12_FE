@@ -6,7 +6,7 @@ export interface EventItem {
   location: string
   date: string
   time: string
-  organizer: Organizer | string
+  organizer: Organizer 
   petsAllowed: boolean
   images: string[]
 
