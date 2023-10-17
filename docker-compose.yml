@@ -1,6 +1,6 @@
 version: "3.9"
 services:
   web: 
-    image: "putipongsailen/331-frontend:latest"
+    image: "putipongsailen/frontend-12:latest"
     ports:
           - 8001:80

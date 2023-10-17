@@ -23,7 +23,7 @@ jobs:
               with:
                   context: .
                   push: true
-                  tags: iceputipong/331-frontend:latest
+                  tags: putipongsailen/frontend-12:latest
     deploy:
         runs-on: ubuntu-latest
         needs: docker
