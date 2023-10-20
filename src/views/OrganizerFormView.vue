@@ -48,7 +48,7 @@ function saveOrganizer() {
 
       <h3>The image of the Event</h3>
       <ImageUpload v-model="organizer.images" />
-      <button tyoe="submit">Submit</button>
+      <button type="submit">Submit</button>
     </form>
     <pre>{{ organizer }}</pre>
   </div>
